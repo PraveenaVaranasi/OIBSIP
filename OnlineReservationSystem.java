@@ -1,7 +1,6 @@
 import java.io.*;
 import java.util.*;
 public class OnlineReservationSystem {
-    // User and Reservation classes
     static class User {
         String username, password;
         User(String u, String p) { 
@@ -27,17 +26,13 @@ public class OnlineReservationSystem {
             return new Reservation(p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8]);
         }
     }
-    // File names
     static final String USERS_FILE = "users.txt";
     static final String RESERVATIONS_FILE = "reservations.txt";
-    // Data
     static Map<String, User> users = new HashMap<>();
     static List<Reservation> reservations = new ArrayList<>();
     static Scanner sc = new Scanner(System.in);
-
     public static void main(String[] args) {
         loadUsers();
-        // Ensure Praveena user exists
         if (!users.containsKey("Praveena")) {
             users.put("Praveena", new User("Praveena", "1325"));
             saveUsers();
@@ -65,8 +60,6 @@ public class OnlineReservationSystem {
             }
         }
     }
-
-    // User registration
     static void register() {
         System.out.print("Choose username: ");
         String username = sc.nextLine();
@@ -80,8 +73,6 @@ public class OnlineReservationSystem {
         saveUsers();
         System.out.println("Registration successful! You can now login.");
     }
-
-    // User login
     static User login() {
         System.out.print("Username: ");
         String username = sc.nextLine();
@@ -96,8 +87,6 @@ public class OnlineReservationSystem {
             return null;
         }
     }
-
-    // User menu after login
     static void userMenu(User user) {
         while (true) {
             System.out.println("\n--- Welcome, " + user.username + " ---");
@@ -120,8 +109,6 @@ public class OnlineReservationSystem {
             }
         }
     }
-
-    // Make reservation
     static void makeReservation(User user) {
         System.out.print("Your Name: ");
         String name = sc.nextLine();
@@ -143,8 +130,6 @@ public class OnlineReservationSystem {
         saveReservations();
         System.out.println("Reservation successful! Your PNR: " + pnr);
     }
-
-    // Cancel reservation
     static void cancelReservation(User user) {
         System.out.print("Enter PNR to cancel: ");
         String pnr = sc.nextLine();
@@ -171,8 +156,6 @@ public class OnlineReservationSystem {
             System.out.println("No reservation found with that PNR for your account.");
         }
     }
-
-    // View user's reservations
     static void viewReservations(User user) {
         boolean any = false;
         for (Reservation r : reservations) {
@@ -183,19 +166,13 @@ public class OnlineReservationSystem {
         }
         if (!any) System.out.println("No reservations found.");
     }
-
-    // Print reservation details
     static void printReservation(Reservation r) {
         System.out.println("PNR: " + r.pnr + ", Name: " + r.name + ", Train: " + r.trainNo + " - " + r.trainName +
                 ", Class: " + r.classType + ", Date: " + r.date + ", From: " + r.fromPlace + ", To: " + r.toPlace);
     }
-
-    // Generate unique PNR
     static String generatePNR() {
         return "PNR" + (System.currentTimeMillis() % 1000000);
     }
-
-    // Load users from file
     static void loadUsers() {
         try (BufferedReader br = new BufferedReader(new FileReader(USERS_FILE))) {
             String line;
@@ -204,11 +181,8 @@ public class OnlineReservationSystem {
                 if (p.length == 2) users.put(p[0], new User(p[0], p[1]));
             }
         } catch (IOException e) {
-            // File may not exist yet
         }
     }
-
-    // Save users to file
     static void saveUsers() {
         try (PrintWriter pw = new PrintWriter(new FileWriter(USERS_FILE))) {
             for (User u : users.values()) {
@@ -217,9 +191,7 @@ public class OnlineReservationSystem {
         } catch (IOException e) {
             System.out.println("Error saving users.");
         }
-    }
-
-    // Load reservations from file
+    } 
     static void loadReservations() {
         try (BufferedReader br = new BufferedReader(new FileReader(RESERVATIONS_FILE))) {
             String line;
@@ -228,11 +200,8 @@ public class OnlineReservationSystem {
                 if (r != null) reservations.add(r);
             }
         } catch (IOException e) {
-            // File may not exist yet
         }
     }
-
-    // Save reservations to file
     static void saveReservations() {
         try (PrintWriter pw = new PrintWriter(new FileWriter(RESERVATIONS_FILE))) {
             for (Reservation r : reservations) {
